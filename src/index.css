@@ -90,3 +90,11 @@
   cursor: pointer;
   border-radius: 8px;
 }
+.delete {
+  background-color: #f1356d;
+  color: #fff;
+  padding: 8px;
+  border: 0;
+  cursor: pointer;
+  border-radius: 8px;
+}

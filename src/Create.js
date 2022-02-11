@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useHistory} from 'react-router-dom';
 
 const Create = () => {
 
@@ -6,19 +7,27 @@ const Create = () => {
     const [body,setBody] = useState('');
     const [author,setAuthor] = useState('mario')
     const [ispending,setPending] = useState(false);
-    const [msg,setMsg] = useState(null);
+    // const [msg,setMsg] = useState(null);
+
+    const history = useHistory();
 
     const handleSubmit = (e) =>{
         e.preventDefault();
         const blog = {title,body,author};
-       fetch('http://localhost:8000/blogs',{
-           method:"POST",
-           body:JSON.stringify(blog),
-           headers:{"Content-Type":"application/json"}
-       }).then(() => {
-           
-        setMsg('Your blog have successflly added');
-       })
+        setPending(true);
+       setTimeout(()=>{
+        fetch('http://localhost:8000/blogs',{
+            method:"POST",
+            body:JSON.stringify(blog),
+            headers:{"Content-Type":"application/json"}
+        }).then(() => {
+        //  setMsg('Your blog have successflly added');
+         setPending(false);
+         console.log("Your blog have been added");
+        //  history.go(-1);
+        history.push('/')
+        })
+       },1000)
     //    window.location.replace('/index.html')
     }
 
@@ -46,9 +55,10 @@ const Create = () => {
                   <option value="mario">mario</option>
                   <option value="yoshi">yoshi</option>
               </select>
-              <button>Add Blog</button>
+              {!ispending && <button>Add Blog</button>}
+              {ispending && <button disabled>Adding Blog....</button>}
             </form>
-            {msg && <h2>{msg}</h2>}
+            {/* {msg && <h2>{msg}</h2>} */}
         </div>
      );
 }
